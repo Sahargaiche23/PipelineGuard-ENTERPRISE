@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -52,48 +52,8 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    networks:
-      - pipelineguard_network
-
-  # Backend FastAPI
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: pipelineguard_backend
-    depends_on:
-      postgres:
-        condition: service_healthy
-      kafka:
-        condition: service_started
-    ports:
-      - "8000:8000"
-    environment:
-      DATABASE_URL: postgresql://postgres:123@postgres:5432/redditdb
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      REDIS_URL: redis://redis:6379
-    volumes:
-      - ./backend:/app
-    networks:
-      - pipelineguard_network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Frontend Angular
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    container_name: pipelineguard_frontend
-    depends_on:
-      - backend
-    ports:
-      - "80:80"
     networks:
       - pipelineguard_network
 
