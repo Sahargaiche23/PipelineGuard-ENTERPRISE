@@ -1,0 +1,125 @@
+<div class="auth-container">
+  <!-- Background Elements -->
+  <div class="auth-background">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="auth-content">
+    <!-- Header Section -->
+    <div class="auth-header">
+      <div class="logo-section">
+        <h1 class="brand-title">PipelineGuard</h1>
+        <p class="brand-subtitle">Enterprise</p>
+      </div>
+    </div>
+
+    <!-- Login Form -->
+    <div class="auth-form-container">
+      <div class="form-header">
+        <h2>Connexion</h2>
+        <p>Accédez à votre tableau de bord PipelineGuard Enterprise</p>
+      </div>
+
+      <form (ngSubmit)="login()" #loginForm="ngForm" class="auth-form">
+        <!-- Username Field -->
+        <div class="input-group">
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input
+              type="text"
+              name="username"
+              [(ngModel)]="username"
+              placeholder="Nom d'utilisateur"
+              class="form-input"
+              minlength="3"
+              required
+              #usernameInput="ngModel"
+              [class.error]="usernameInput.invalid && usernameInput.touched"
+            />
+          </div>
+          <div class="error-message" *ngIf="usernameInput.invalid && usernameInput.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Le nom d'utilisateur doit contenir au moins 3 caractères
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="input-group">
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Mot de passe"
+              class="form-input"
+              minlength="6"
+              required
+              #passwordInput="ngModel"
+              [class.error]="passwordInput.invalid && passwordInput.touched"
+            />
+            <i 
+              class="fas password-toggle"
+              [class.fa-eye]="!showPassword"
+              [class.fa-eye-slash]="showPassword"
+              (click)="togglePasswordVisibility()"
+            ></i>
+          </div>
+          <div class="error-message" *ngIf="passwordInput.invalid && passwordInput.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Le mot de passe doit contenir au moins 6 caractères
+          </div>
+        </div>
+
+        <!-- Remember Me -->
+        <div class="checkbox-group">
+          <label class="checkbox-wrapper">
+            <input 
+              type="checkbox" 
+              name="rememberMe" 
+              [(ngModel)]="rememberMe"
+            />
+            <span class="checkmark"></span>
+            <span class="checkbox-text">Se souvenir de moi</span>
+          </label>
+        </div>
+
+        <!-- Error Message -->
+        <div class="global-error" *ngIf="error">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ error }}
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="loginForm.invalid"
+        >
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Se connecter</span>
+        </button>
+      </form>
+
+      <!-- Additional Links -->
+      <div class="auth-links">
+        <a href="#" class="forgot-password">
+          <i class="fas fa-key"></i>
+          Mot de passe oublié ?
+        </a>
+      </div>
+
+      <!-- Register Link -->
+      <div class="auth-footer">
+        <p>Vous n'avez pas encore de compte ?</p>
+        <a routerLink="/register" class="auth-link">
+          <i class="fas fa-user-plus"></i>
+          Créer un compte
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

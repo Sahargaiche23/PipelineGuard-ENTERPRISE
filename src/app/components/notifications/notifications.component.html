@@ -1,0 +1,49 @@
+<app-navbar></app-navbar>
+<div class="notifications-container">
+  <h2>🔔 Notifications</h2>
+  <!-- ... (tes boutons et infos) ... -->
+
+  <!-- Search Input -->
+  <div class="search-section">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="🔎 Rechercher dans les notifications ou Reddit..."
+      [(ngModel)]="searchTerm"
+      (input)="filterNotifications()"
+    />
+  </div>
+
+  <!-- Recherche Reddit -->
+  <div *ngIf="searchTerm && searchResults.length > 0" class="search-results">
+    <h3>Résultats Reddit</h3>
+    <div class="reddit-list">
+      <div *ngFor="let post of searchResults" class="reddit-card">
+        <div class="reddit-header">
+          <span class="reddit-level" [ngClass]="post.level">{{ post.level | uppercase }}</span>
+          <span class="reddit-score">Score: {{ post.score }}</span>
+        </div>
+        <div class="reddit-title">
+          <a [href]="post.url" target="_blank">{{ post.title }}</a>
+        </div>
+        <div class="reddit-meta">
+          Par <span class="reddit-author">{{ post.author }}</span>
+          <span class="reddit-date">{{ post.created_utc * 1000 | date:'medium' }}</span>
+        </div>
+        <div class="reddit-id">ID: {{ post.id }}</div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="searchTerm && searching" class="loading-state">
+    <p>⏳ Recherche Reddit...</p>
+  </div>
+
+  <!-- Notifications List -->
+  <div class="notifications-list" *ngIf="filteredNotifications.length > 0">
+    <div *ngFor="let notification of filteredNotifications; trackBy: trackByFn; let i = index"
+         class="notification-item"
+         [class.notification-new]="i < 3">
+      <!-- ... notifications ... -->
+    </div>
+  </div>
+</div>

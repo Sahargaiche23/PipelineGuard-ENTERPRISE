@@ -1,0 +1,86 @@
+<nav class="modern-navbar">
+  <!-- Logo et nom de l'entreprise -->
+  <div class="navbar-brand">
+    <div class="logo-container">
+      <span class="brand-text">
+        <span class="company-name">PipelineGuard</span>
+        <span class="company-tagline">Enterprise</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Navigation centrale -->
+  <div class="navbar-nav">
+    <a href="/notifications" class="nav-link" routerLink="/notifications" routerLinkActive="active">
+      <i class="fa fa-bell"></i>
+      <span>Notifications</span>
+    </a>
+    <a href="/dashboard" class="nav-link">
+      <i class="fa fa-dashboard"></i>
+      <span>Tableau de bord</span>
+    </a>
+    <a href="/monitoring" class="nav-link">
+      <i class="fa fa-line-chart"></i>
+      <span>Monitoring</span>
+    </a>
+  </div>
+
+  <!-- Section utilisateur et notifications -->
+  <div class="navbar-user">
+    <!-- Notification Bell -->
+    <div class="notification-container" (click)="navigateToNotifications()">
+      <div class="notification-bell">
+        <i class="fa fa-bell"></i>
+        <span *ngIf="notificationCount > 0" class="notification-badge pulse">{{ notificationCount }}</span>
+      </div>
+    </div>
+
+    <!-- User Profile Dropdown -->
+    <div class="user-profile" (click)="toggleUserMenu()" [class.active]="isUserMenuOpen">
+      <div class="user-avatar">
+        <i class="fa fa-user"></i>
+      </div>
+      <div class="user-info">
+        <span class="user-name">{{ currentUser?.username || 'Utilisateur' }}</span>
+      </div>
+      <i class="fa fa-chevron-down dropdown-arrow" [class.rotated]="isUserMenuOpen"></i>
+    </div>
+
+    <!-- User Dropdown Menu -->
+    <div class="user-dropdown" [class.show]="isUserMenuOpen">
+      <div class="dropdown-header">
+        <div class="user-avatar-large">
+          <i class="fa fa-user"></i>
+        </div>
+        <div class="user-details">
+          <h4>{{ currentUser?.username || 'Utilisateur' }}</h4>
+        </div>
+      </div>
+      
+      <div class="dropdown-divider"></div>
+      
+      <div class="dropdown-menu">
+        <a href="#" class="dropdown-item">
+          <i class="fa fa-user"></i>
+          <span>Mon Profil</span>
+        </a>
+        <a href="#" class="dropdown-item">
+          <i class="fa fa-cog"></i>
+          <span>Paramètres</span>
+        </a>
+        <a href="#" class="dropdown-item">
+          <i class="fa fa-shield"></i>
+          <span>Sécurité</span>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a href="#" class="dropdown-item logout" (click)="logout($event)">
+          <i class="fa fa-sign-out"></i>
+          <span>Déconnexion</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-overlay" [class.show]="isUserMenuOpen" (click)="closeUserMenu()"></div>
+</nav>

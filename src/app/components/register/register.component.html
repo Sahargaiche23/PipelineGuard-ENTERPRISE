@@ -1,0 +1,141 @@
+<div class="auth-container">
+  <!-- Background Elements -->
+  <div class="auth-background">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="auth-content">
+    <!-- Header Section -->
+    <div class="auth-header">
+      <div class="logo-section">
+        <h1 class="brand-title">PipelineGuard</h1>
+        <p class="brand-subtitle">Enterprise</p>
+      </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="auth-form-container">
+      <div class="form-header">
+        <h2>Créer un compte</h2>
+        <p>Rejoignez PipelineGuard Enterprise et commencez votre surveillance</p>
+      </div>
+
+      <form (ngSubmit)="register()" #registerForm="ngForm" class="auth-form">
+        <!-- Username Field -->
+        <div class="input-group">
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input
+              type="text"
+              name="username"
+              [(ngModel)]="username"
+              placeholder="Nom d'utilisateur"
+              class="form-input"
+              minlength="3"
+              required
+              #usernameInput="ngModel"
+              [class.error]="usernameInput.invalid && usernameInput.touched"
+            />
+          </div>
+          <div class="error-message" *ngIf="usernameInput.invalid && usernameInput.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Le nom d'utilisateur doit contenir au moins 3 caractères
+          </div>
+        </div>
+
+        
+
+        <!-- Password Field -->
+        <div class="input-group">
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Mot de passe"
+              class="form-input"
+              minlength="6"
+              required
+              #passwordInput="ngModel"
+              [class.error]="passwordInput.invalid && passwordInput.touched"
+            />
+            <i 
+              class="fas password-toggle"
+              [class.fa-eye]="!showPassword"
+              [class.fa-eye-slash]="showPassword"
+              (click)="togglePasswordVisibility()"
+            ></i>
+          </div>
+          <div class="error-message" *ngIf="passwordInput.invalid && passwordInput.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Le mot de passe doit contenir au moins 6 caractères
+          </div>
+        </div>
+
+      
+        <!-- Terms and Conditions -->
+        <div class="checkbox-group">
+          <label class="checkbox-wrapper">
+            <input 
+              type="checkbox" 
+              name="acceptTerms" 
+              [(ngModel)]="acceptTerms"
+              required
+              #termsInput="ngModel"
+            />
+            <span class="checkmark"></span>
+            <span class="checkbox-text">
+              J'accepte les <a href="#" class="terms-link">conditions d'utilisation</a> 
+              et la <a href="#" class="terms-link">politique de confidentialité</a>
+            </span>
+          </label>
+          <div class="error-message" *ngIf="termsInput.invalid && termsInput.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            Vous devez accepter les conditions d'utilisation
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <span>Création de votre compte...</span>
+        </div>
+
+        <!-- Error Message -->
+        <div class="global-error" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ errorMessage }}
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" *ngIf="successMessage">
+          <i class="fas fa-check-circle"></i>
+          {{ successMessage }}
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="registerForm.invalid || !acceptTerms || isLoading || passwordMismatch"
+        >
+          <i class="fas fa-user-plus"></i>
+          <span>Créer mon compte</span>
+        </button>
+      </form>
+
+      <!-- Login Link -->
+      <div class="auth-footer">
+        <p>Vous avez déjà un compte ?</p>
+        <a routerLink="/login" class="auth-link">
+          <i class="fas fa-sign-in-alt"></i>
+          Se connecter
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
