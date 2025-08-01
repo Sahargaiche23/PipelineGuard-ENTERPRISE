@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV '/home/sahar/Téléchargements/PipelineGuard-ENTERPRISE-back/venv'
+set -gx VIRTUAL_ENV /home/sahar/Bureau/Stage/backend/venv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

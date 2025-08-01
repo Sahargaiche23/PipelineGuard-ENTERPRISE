@@ -53,6 +53,7 @@ def register(username: str, password: str, db: Session = Depends(get_db)):
     db_user = User(username=username, hashed_password=hashed)
     db.add(db_user)
     db.commit()
+    
     return {"msg": "Registered"}
 
 @router.post("/login")

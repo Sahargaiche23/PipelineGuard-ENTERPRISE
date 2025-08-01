@@ -53,6 +53,10 @@ async def handle_message():
             # Insertion dans notifications (SQLAlchemy) pour chaque utilisateur
             users = db.query(User).all()
             for user in users:
+                exists = db.query(Notification).filter_by(user_id=user.id, content=data["title"]).first()
+                if exists:
+                    print(f"⏩ Notification déjà présente pour {user.username}")
+                    continue
                 notif = Notification(
                     user_id=user.id,
                     content=data["title"]
@@ -64,9 +68,8 @@ async def handle_message():
                 # (Optionnel) Envoi en temps réel si le user est connecté via WebSocket
                 try:
                     await manager.send_personal_message(f"🔔 {data['title']}", user.username)
-                except Exception as e:
+                except Exception:
                     pass  # Si le manager n'est pas dispo, on ignore
-
     except KeyboardInterrupt:
         print("\n🛑 Arrêt manuel du consumer.")
     finally:

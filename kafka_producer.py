@@ -20,27 +20,23 @@ producer = KafkaProducer(
 subreddit_name = "technology"
 subreddit = reddit.subreddit(subreddit_name)
 
-def get_post_level(score):
-    if score >= 1000:
-        return "top"
-    elif score >= 100:
-        return "moyen"
-    else:
-        return "bas"
+# ----------- Filtre personnalisé -----------
+# Par exemple, on ne garde que les posts dont le titre contient "AI"
+def custom_filter(post):
+    return "AI" in post.title or "ai" in post.title
 
 # Stream des nouveaux posts du subreddit
 for post in subreddit.stream.submissions():
-    level = get_post_level(post.score)
-    data = {
-        'id': post.id,
-        'title': post.title,
-        'author': str(post.author) if post.author else "unknown",
-        'created_utc': float(post.created_utc),
-        'url': post.url,
-        'score': post.score,
-        'level': level,
-        'query': subreddit_name
-    }
-    print(f"📤 Sending post: {data['title']} [score={data['score']}, niveau={data['level']}]")
-    producer.send("reddit_posts", data)
-    producer.flush()  # Force l'envoi du message tout de suite (optionnel)
+    if custom_filter(post):  # <-- Ici tu mets ta logique de filtre
+        data = {
+            'id': post.id,
+            'title': post.title,
+            'author': str(post.author) if post.author else "unknown",
+            'created_utc': float(post.created_utc),
+            'url': post.url,
+            'score': post.score,
+            'query': subreddit_name
+        }
+        print(f"📤 Sending post: {data['title']}")
+        producer.send("reddit_posts", data)
+        producer.flush()
